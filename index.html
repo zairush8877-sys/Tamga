@@ -39,11 +39,12 @@
 
   <!-- ===== Герой ===== -->
   <section class="hero" id="hero">
+    <div class="hero__photo" aria-hidden="true"></div>
     <div class="hero__ornament" aria-hidden="true"></div>
     <div class="container hero__content">
       <p class="hero__eyebrow">Ресторан восточной кухни</p>
       <h1 class="hero__title">Тамга</h1>
-      <p class="hero__subtitle">Вкус Великого шёлкового пути — плов из казана, манты ручной лепки и шашлык на живом огне</p>
+      <p class="hero__subtitle">Вкус Востока — мясо на живом огне, томлёная баранья голяшка и домашняя выпечка</p>
       <div class="hero__actions">
         <a href="#booking" class="btn btn--primary">Забронировать столик</a>
         <a href="#menu" class="btn btn--ghost">Смотреть меню</a>
@@ -61,25 +62,22 @@
         <p class="section__eyebrow">О ресторане</p>
         <h2 class="section__title">Тамга — знак гостеприимства</h2>
         <p>Тамга — древний родовой знак кочевников, символ дома и принадлежности. Для нас это знак того, что каждый гость здесь — часть семьи.</p>
-        <p>Мы готовим по рецептам, которые передаются поколениями: плов томится в чугунном казане на открытом огне, тесто для мантов и лагмана раскатывается вручную, а специи мы привозим с базаров Самарканда и Оша.</p>
+        <p>Мы готовим по рецептам, которые передаются поколениями: мясо томится на живом огне, тесто для лепёшек и дюшбары раскатывается вручную, а специи мы привозим с восточных базаров.</p>
         <ul class="about__features">
           <li><span class="about__num">12</span><span>лет с вами</span></li>
           <li><span class="about__num">120</span><span>мест в двух залах</span></li>
           <li><span class="about__num">40+</span><span>блюд в меню</span></li>
         </ul>
       </div>
-      <div class="about__media" aria-hidden="true">
+      <div class="about__media">
         <div class="about__card about__card--kazan">
-          <span class="about__emoji">🫕</span>
-          <p>Плов из казана<br>на живом огне</p>
+          <p>Мясо на живом огне<br>и блюда из казана</p>
         </div>
         <div class="about__card about__card--tea">
-          <span class="about__emoji">🫖</span>
-          <p>Чайная церемония<br>и восточные сладости</p>
+          <p>Лепёшки и выпечка<br>из собственной пекарни</p>
         </div>
         <div class="about__card about__card--bread">
-          <span class="about__emoji">🥖</span>
-          <p>Лепёшки из тандыра<br>каждый час</p>
+          <p>Авторские десерты<br>от нашего кондитера</p>
         </div>
       </div>
     </div>
@@ -92,90 +90,194 @@
       <h2 class="section__title">Наши блюда</h2>
 
       <div class="menu__tabs" role="tablist" aria-label="Разделы меню">
-        <button class="menu__tab is-active" role="tab" aria-selected="true" data-tab="hot">Горячее</button>
-        <button class="menu__tab" role="tab" aria-selected="false" data-tab="starters">Закуски</button>
-        <button class="menu__tab" role="tab" aria-selected="false" data-tab="grill">Мангал</button>
-        <button class="menu__tab" role="tab" aria-selected="false" data-tab="desserts">Десерты и напитки</button>
+        <button class="menu__tab is-active" role="tab" aria-selected="true" data-tab="breakfast">Завтраки</button>
+        <button class="menu__tab" role="tab" aria-selected="false" data-tab="starters">Закуски и салаты</button>
+        <button class="menu__tab" role="tab" aria-selected="false" data-tab="soups">Супы</button>
+        <button class="menu__tab" role="tab" aria-selected="false" data-tab="grill">Мангал и горячее</button>
+        <button class="menu__tab" role="tab" aria-selected="false" data-tab="desserts">Десерты</button>
       </div>
 
-      <div class="menu__panel is-active" data-panel="hot" role="tabpanel">
-        <div class="dish">
-          <div class="dish__head"><h3>Плов «Тамга»</h3><span class="dish__dots"></span><span class="dish__price">590 ₽</span></div>
-          <p class="dish__desc">Девзира, баранина, жёлтая морковь, нут, барбарис, головка чеснока</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Манты с бараниной</h3><span class="dish__dots"></span><span class="dish__price">520 ₽</span></div>
-          <p class="dish__desc">Ручная лепка, курдюк, лук, сметана и томатный соус — 5 шт.</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Лагман уйгурский</h3><span class="dish__dots"></span><span class="dish__price">560 ₽</span></div>
-          <p class="dish__desc">Тянутая лапша, говядина, паприка, сельдерей, джусай</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Казан-кебаб</h3><span class="dish__dots"></span><span class="dish__price">640 ₽</span></div>
-          <p class="dish__desc">Баранина на кости, обжаренная в казане с картофелем и зирой</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Шурпа</h3><span class="dish__dots"></span><span class="dish__price">450 ₽</span></div>
-          <p class="dish__desc">Наваристый бульон из баранины, овощи, свежая зелень</p>
-        </div>
+      <div class="menu__panel is-active" data-panel="breakfast" role="tabpanel">
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-syrniki.jpg" alt="Сырники со сметаной и вареньем" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Сырники</h3><span class="dish-card__price">390 ₽</span></div>
+            <p class="dish-card__desc">Со сметаной и ягодным вареньем, сахарная пудра</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-benedict.jpg" alt="Яйца бенедикт с лососем" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Яйца бенедикт</h3><span class="dish-card__price">520 ₽</span></div>
+            <p class="dish-card__desc">С лососем, голландским соусом и свежими листьями</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-omelet.jpg" alt="Омлет с авокадо" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Омлет с авокадо</h3><span class="dish-card__price">440 ₽</span></div>
+            <p class="dish-card__desc">С пармезаном, печёными томатами и домашним хлебом</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-brunch-burger.jpg" alt="Бранч-бургер с яйцом" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Бранч-бургер</h3><span class="dish-card__price">490 ₽</span></div>
+            <p class="dish-card__desc">Бриошь, яичница, ветчина, свежие овощи и зелень</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-blinchiki.jpg" alt="Блинчики с вишней" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Блинчики с вишней</h3><span class="dish-card__price">360 ₽</span></div>
+            <p class="dish-card__desc">Тонкие блинчики, вишнёвый конфитюр, сметана</p>
+          </div>
+        </article>
       </div>
 
       <div class="menu__panel" data-panel="starters" role="tabpanel" hidden>
-        <div class="dish">
-          <div class="dish__head"><h3>Самса из тандыра</h3><span class="dish__dots"></span><span class="dish__price">180 ₽</span></div>
-          <p class="dish__desc">Слоёное тесто, баранина, лук, кунжут — 1 шт.</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Ачичук</h3><span class="dish__dots"></span><span class="dish__price">290 ₽</span></div>
-          <p class="dish__desc">Помидоры, красный лук, базилик, стручковый перец</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Ассорти лепёшек</h3><span class="dish__dots"></span><span class="dish__price">220 ₽</span></div>
-          <p class="dish__desc">Тандырная, катлама и патыр со сливочным маслом</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Хумус с лепёшкой</h3><span class="dish__dots"></span><span class="dish__price">340 ₽</span></div>
-          <p class="dish__desc">Нут, тахини, оливковое масло, паприка, кедровые орехи</p>
-        </div>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-stracciatella.jpg" alt="Страчателла с печёными томатами" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Страчателла</h3><span class="dish-card__price">540 ₽</span></div>
+            <p class="dish-card__desc">С печёными томатами, базиликом и бальзамиком</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-shrimp-salad.jpg" alt="Салат с креветками и авокадо" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Салат с креветками</h3><span class="dish-card__price">590 ₽</span></div>
+            <p class="dish-card__desc">Тигровые креветки, авокадо, томаты, цитрусовая заправка</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-veg-salad.jpg" alt="Овощной салат с красным луком" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Овощной салат</h3><span class="dish-card__price">420 ₽</span></div>
+            <p class="dish-card__desc">Сладкие томаты, огурцы, красный лук, микрозелень</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-skewer-salad.jpg" alt="Тёплый салат с мини-шашлычком" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Тёплый салат с телятиной</h3><span class="dish-card__price">560 ₽</span></div>
+            <p class="dish-card__desc">Мини-шашлычок из телятины, листья салата, черри</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-guacamole-shrimp.jpg" alt="Креветки на гуакамоле" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Креветки на гуакамоле</h3><span class="dish-card__price">580 ₽</span></div>
+            <p class="dish-card__desc">Обжаренные креветки в пряном соусе, гуакамоле, кинза</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="menu__panel" data-panel="soups" role="tabpanel" hidden>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-shurpa.jpg" alt="Шурпа из баранины" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Шурпа</h3><span class="dish-card__price">480 ₽</span></div>
+            <p class="dish-card__desc">Наваристый бульон из баранины, овощи, свежая зелень</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-pumpkin-soup.jpg" alt="Тыквенный крем-суп" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Тыквенный крем-суп</h3><span class="dish-card__price">420 ₽</span></div>
+            <p class="dish-card__desc">Печёная тыква, сливки, хрустящие семечки и лаваш</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-dushbara.jpg" alt="Дюшбара — бульон с мини-пельменями" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Дюшбара</h3><span class="dish-card__price">450 ₽</span></div>
+            <p class="dish-card__desc">Крепкий бульон с крошечными пельменями и зеленью</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-tomato-soup.jpg" alt="Томатный суп со страчателлой" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Томатный суп</h3><span class="dish-card__price">460 ₽</span></div>
+            <p class="dish-card__desc">Пряные томаты, страчателла, базилик, семена льна</p>
+          </div>
+        </article>
       </div>
 
       <div class="menu__panel" data-panel="grill" role="tabpanel" hidden>
-        <div class="dish">
-          <div class="dish__head"><h3>Шашлык из баранины</h3><span class="dish__dots"></span><span class="dish__price">620 ₽</span></div>
-          <p class="dish__desc">Мякоть задней ноги, маринад на луке и специях — 200 г</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Люля-кебаб</h3><span class="dish__dots"></span><span class="dish__price">540 ₽</span></div>
-          <p class="dish__desc">Рубленая баранина с курдюком и кинзой — 200 г</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Цыплёнок на углях</h3><span class="dish__dots"></span><span class="dish__price">580 ₽</span></div>
-          <p class="dish__desc">Маринад из йогурта и восточных специй, соус наршараб</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Овощи на мангале</h3><span class="dish__dots"></span><span class="dish__price">380 ₽</span></div>
-          <p class="dish__desc">Баклажан, перец, томаты, шампиньоны, зелень</p>
-        </div>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-veal-kebab.jpg" alt="Шашлык из телятины" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Шашлык из телятины</h3><span class="dish-card__price">640 ₽</span></div>
+            <p class="dish-card__desc">Маринованный лук, аджика, свежие овощи — 200 г</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-lyulya.jpg" alt="Люля-кебаб" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Люля-кебаб</h3><span class="dish-card__price">560 ₽</span></div>
+            <p class="dish-card__desc">Рубленая баранина с курдюком и кинзой — 200 г</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-chicken-kebab.jpg" alt="Шашлык из курицы" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Шашлык из курицы</h3><span class="dish-card__price">520 ₽</span></div>
+            <p class="dish-card__desc">Сочное бедро в пряном маринаде, маринованный лук</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-lamb-rack.jpg" alt="Каре ягнёнка" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Каре ягнёнка</h3><span class="dish-card__price">890 ₽</span></div>
+            <p class="dish-card__desc">На углях, с аджикой и свежими овощами</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-lamb-shank.jpg" alt="Баранья голяшка с лепёшкой" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Баранья голяшка</h3><span class="dish-card__price">920 ₽</span></div>
+            <p class="dish-card__desc">Томлёная, на картофельном пюре, в хрустящей лепёшке</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-salmon.jpg" alt="Лосось со шпинатом" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Лосось на пару</h3><span class="dish-card__price">780 ₽</span></div>
+            <p class="dish-card__desc">Со шпинатом, брокколи и сливочно-шафрановым соусом</p>
+          </div>
+        </article>
       </div>
 
       <div class="menu__panel" data-panel="desserts" role="tabpanel" hidden>
-        <div class="dish">
-          <div class="dish__head"><h3>Чак-чак с мёдом</h3><span class="dish__dots"></span><span class="dish__price">280 ₽</span></div>
-          <p class="dish__desc">Хрустящее тесто, горный мёд, грецкий орех</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Пахлава</h3><span class="dish__dots"></span><span class="dish__price">320 ₽</span></div>
-          <p class="dish__desc">Слоёное тесто, фисташки, сироп с розовой водой</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Чайник чая</h3><span class="dish__dots"></span><span class="dish__price">350 ₽</span></div>
-          <p class="dish__desc">Зелёный, чёрный или травяной — с восточными сладостями</p>
-        </div>
-        <div class="dish">
-          <div class="dish__head"><h3>Домашний лимонад</h3><span class="dish__dots"></span><span class="dish__price">290 ₽</span></div>
-          <p class="dish__desc">Фейхоа, тархун или облепиха с мёдом — 500 мл</p>
-        </div>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-napoleon.jpg" alt="Наполеон" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Наполеон</h3><span class="dish-card__price">380 ₽</span></div>
+            <p class="dish-card__desc">Тонкие слои, карамелизированный крем, подача с соусом</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-cheesecake.jpg" alt="Чизкейк с голубикой" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Чизкейк с голубикой</h3><span class="dish-card__price">420 ₽</span></div>
+            <p class="dish-card__desc">Нежный сырный крем, свежая голубика, песочная основа</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-pavlova.jpg" alt="Павлова с клубникой" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Павлова</h3><span class="dish-card__price">390 ₽</span></div>
+            <p class="dish-card__desc">Хрустящая меренга, клубника, шоколад и фисташки</p>
+          </div>
+        </article>
+        <article class="dish-card">
+          <div class="dish-card__photo"><img src="img/dish-ponchiki.jpg" alt="Творожные пончики" loading="lazy"></div>
+          <div class="dish-card__body">
+            <div class="dish-card__head"><h3>Творожные пончики</h3><span class="dish-card__price">340 ₽</span></div>
+            <p class="dish-card__desc">Горячие, с сырными палочками и сгущённым молоком</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -185,15 +287,27 @@
     <div class="container">
       <p class="section__eyebrow">Галерея</p>
       <h2 class="section__title">Атмосфера «Тамги»</h2>
-      <div class="gallery__grid">
-        <figure class="gallery__item gallery__item--1"><figcaption>Главный зал</figcaption></figure>
-        <figure class="gallery__item gallery__item--2"><figcaption>Открытая кухня</figcaption></figure>
-        <figure class="gallery__item gallery__item--3"><figcaption>Плов в казане</figcaption></figure>
-        <figure class="gallery__item gallery__item--4"><figcaption>Чайная зона</figcaption></figure>
-        <figure class="gallery__item gallery__item--5"><figcaption>Летняя терраса</figcaption></figure>
-        <figure class="gallery__item gallery__item--6"><figcaption>Тандыр</figcaption></figure>
+      <div class="gallery__grid" id="galleryGrid">
+        <figure class="gallery__item"><img src="img/gallery-01.jpg" alt="Блинчики с вишней" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-02.jpg" alt="Яйца бенедикт с лососем" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-03.jpg" alt="Страчателла с томатами" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-04.jpg" alt="Тёплый салат с телятиной" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-05.jpg" alt="Мясо на мангале" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-06.jpg" alt="Салат в керамической пиале" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-07.jpg" alt="Креветки на гуакамоле" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-08.jpg" alt="Овощи на мангале" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-09.jpg" alt="Каре ягнёнка" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-10.jpg" alt="Дымящийся суп" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-11.jpg" alt="Слои торта Наполеон" loading="lazy"></figure>
+        <figure class="gallery__item"><img src="img/gallery-12.jpg" alt="Чизкейк с голубикой" loading="lazy"></figure>
       </div>
-      <p class="gallery__note">Фотографии залов и блюд появятся здесь — замените заглушки на свои изображения в <code>css/style.css</code>.</p>
+
+      <div class="lightbox" id="lightbox" hidden>
+        <button class="lightbox__close" id="lightboxClose" aria-label="Закрыть">&times;</button>
+        <button class="lightbox__arrow lightbox__arrow--prev" id="lightboxPrev" aria-label="Предыдущее фото">&#10094;</button>
+        <img class="lightbox__img" id="lightboxImg" src="" alt="">
+        <button class="lightbox__arrow lightbox__arrow--next" id="lightboxNext" aria-label="Следующее фото">&#10095;</button>
+      </div>
     </div>
   </section>
 

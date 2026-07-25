@@ -43,6 +43,41 @@ tabs.forEach((tab) => {
   });
 });
 
+// Галерея: лайтбокс
+const galleryItems = Array.from(document.querySelectorAll('#galleryGrid .gallery__item img'));
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+let lightboxIndex = 0;
+
+function openLightbox(i) {
+  lightboxIndex = (i + galleryItems.length) % galleryItems.length;
+  const img = galleryItems[lightboxIndex];
+  lightboxImg.src = img.src;
+  lightboxImg.alt = img.alt;
+  lightbox.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightbox.hidden = true;
+  document.body.style.overflow = '';
+}
+
+galleryItems.forEach((img, i) => {
+  img.closest('.gallery__item').addEventListener('click', () => openLightbox(i));
+});
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+document.getElementById('lightboxPrev').addEventListener('click', () => openLightbox(lightboxIndex - 1));
+document.getElementById('lightboxNext').addEventListener('click', () => openLightbox(lightboxIndex + 1));
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', (e) => {
+  if (lightbox.hidden) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') openLightbox(lightboxIndex - 1);
+  if (e.key === 'ArrowRight') openLightbox(lightboxIndex + 1);
+});
+
 // Форма бронирования: минимальная дата — сегодня
 const dateInput = document.getElementById('date');
 dateInput.min = new Date().toISOString().split('T')[0];
