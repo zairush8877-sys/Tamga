@@ -1,40 +1,38 @@
-name: Deploy site to GitHub Pages
+name: Публикация сайта
 
-# Автозапуск включим, когда Pages будет создан в настройках репозитория —
-# до этого каждый push только краснит PR.
+# Pages отдаёт ветку gh-pages, поэтому деплой = обновление этой ветки.
+# Источник в настройках репозитория: Deploy from a branch → gh-pages / root.
 on:
+  push:
+    branches:
+      - main
+      - claude/restaurant-website-5t4n76
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# Пропускаем промежуточные запуски, но не отменяем уже идущий деплой
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  publish:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
-      # Сайт Pages создаётся один раз вручную: Settings → Pages → Source:
-      # GitHub Actions. Токену Actions API создания сайта недоступен
-      # ("Resource not accessible by integration"), поэтому без enablement.
-      - name: Настроить Pages
-        uses: actions/configure-pages@v5
+      - name: Перенести сайт в gh-pages
+        run: |
+          set -e
+          # В публикацию идёт только сам сайт — служебные файлы убираем
+          rm -rf .github
+          touch .nojekyll
 
-      - name: Собрать артефакт из корня репозитория
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Опубликовать
-        id: deployment
-        uses: actions/deploy-pages@v4
+          git checkout -B gh-pages
+          git add -A
+          git commit -m "Публикация сайта из ${GITHUB_SHA::7}" || echo "нечего публиковать"
+          git push -f origin gh-pages
