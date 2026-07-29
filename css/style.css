@@ -271,7 +271,7 @@ a { color: inherit; text-decoration: none; }
 .hero__photo {
   position: absolute;
   inset: -6%;
-  background: url("../img/hero.jpg") center 40% / cover no-repeat;
+  background: url("../img/hero.webp") center 40% / cover no-repeat;
   animation: kenBurns 22s ease-in-out infinite alternate;
   will-change: transform;
 }
@@ -456,11 +456,11 @@ a { color: inherit; text-decoration: none; }
 .about__card--kazan {
   grid-column: span 2;
   min-height: 260px;
-  background-image: url("../img/about-tamgi.jpg");
+  background-image: url("../img/about-tamgi.webp");
   background-position: center 62%;
 }
-.about__card--tea { background-image: url("../img/about-grill.jpg"); }
-.about__card--bread { background-image: url("../img/about-bread.jpg"); }
+.about__card--tea { background-image: url("../img/about-grill.webp"); }
+.about__card--bread { background-image: url("../img/about-bread.webp"); }
 
 /* ---------- Меню ---------- */
 .menu__tabs {
