@@ -196,7 +196,9 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   letter-spacing: .06em;
 }
-.logo__mark { width: 38px; height: 38px; color: var(--c-bronze); }
+/* viewBox 100×100 с полями вокруг овала — размер крупнее прежнего 38px,
+   чтобы знак в шапке читался так же уверенно */
+.logo__mark { width: 46px; height: 46px; color: var(--c-bronze); }
 .nav {
   display: flex;
   gap: 26px;
@@ -287,8 +289,8 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   opacity: .035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cellipse cx='40' cy='40' rx='26' ry='20' fill='none' stroke='%23d9c08a' stroke-width='1.4'/%3E%3Cpath d='M28 49 Q28 33 32 31.5 Q35 30.7 35 34 L35 46 M35 34 Q40 28 45 34 L45 46 M45 34 Q45 30.7 48 31.5 Q52 33 52 49' fill='none' stroke='%23d9c08a' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-size: 80px 80px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='50' rx='35' ry='26.5' fill='none' stroke='%23d9c08a' stroke-width='2.1'/%3E%3Cpath d='M50 17 L52.6 23.5 L50 26.5 L47.4 23.5 Z' fill='%23d9c08a'/%3E%3Cpath d='M50 83 L52.6 76.5 L50 73.5 L47.4 76.5 Z' fill='%23d9c08a'/%3E%3Cpath d='M13 50 L19.5 47.4 L22.5 50 L19.5 52.6 Z' fill='%23d9c08a'/%3E%3Cpath d='M87 50 L80.5 47.4 L77.5 50 L80.5 52.6 Z' fill='%23d9c08a'/%3E%3Cg fill='none' stroke='%23d9c08a' stroke-width='2.1' stroke-linecap='round'%3E%3Cpath d='M41.5 42 C 41.5 36, 35 36, 35 42 L 35 56 C 35 63.5, 27.5 66, 26.5 61 C 25.9 57.6, 30.8 56.4, 32.5 59.8'/%3E%3Cpath d='M58.5 42 C 58.5 36, 65 36, 65 42 L 65 56 C 65 63.5, 72.5 66, 73.5 61 C 74.1 57.6, 69.2 56.4, 67.5 59.8'/%3E%3Cpath d='M41.5 42 L 47.9 51.4'/%3E%3Cpath d='M58.5 42 L 52.1 51.4'/%3E%3Ccircle cx='50' cy='54.6' r='3.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 90px 90px;
 }
 .hero__content { position: relative; z-index: 1; padding-block: 120px; }
 .hero__eyebrow,
