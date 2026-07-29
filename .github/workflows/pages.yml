@@ -1,10 +1,9 @@
 name: Deploy site to GitHub Pages
 
+# Пока Pages не включён в настройках репозитория, автозапуск отключён —
+# иначе каждый push краснит PR. Включите Pages (Settings → Pages →
+# Source: GitHub Actions) и верните сюда блок push с нужными ветками.
 on:
-  push:
-    branches:
-      - main
-      - claude/restaurant-website-5t4n76
   workflow_dispatch:
 
 permissions:
@@ -28,8 +27,6 @@ jobs:
 
       - name: Настроить Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Собрать артефакт из корня репозитория
         uses: actions/upload-pages-artifact@v3
