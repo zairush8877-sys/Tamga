@@ -1,0 +1,27 @@
+# Публикация на Netlify: сайт — статика в корне репозитория, сборка не нужна
+[build]
+  publish = "."
+  command = ""
+
+# Картинки и шрифты именуются вручную и не меняются — держим их в кеше долго
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Разметку и скрипты перепроверяем при каждом заходе, иначе правки
+# доедут до посетителя только после очистки кеша
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
