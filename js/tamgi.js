@@ -58,7 +58,7 @@ const TAMGI_PATHS = [
   function build() {
     const n = countForWidth(w);
     marks = Array.from({ length: n }, (_, i) => {
-      const size = 62 + Math.random() * 62;          // сторона знака в пикселях
+      const size = 46 + Math.random() * 54;          // сторона знака в пикселях
       return {
         path: paths[i % paths.length],
         size,
@@ -68,10 +68,8 @@ const TAMGI_PATHS = [
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
         rot: Math.random() * Math.PI * 2,
-        // еле заметное покачивание вместо полного оборота — знак
-        // остаётся узнаваемым, а не «крутится»
-        vrot: (Math.random() - 0.5) * 0.0012,
-        alpha: 0.55 + Math.random() * 0.3,
+        vrot: (Math.random() - 0.5) * 0.0035,
+        alpha: 0.3 + Math.random() * 0.32,
       };
     });
   }
@@ -128,53 +126,10 @@ const TAMGI_PATHS = [
     }
   }
 
-  // ---- Сетка: узлы дышат волной и разгораются рядом с курсором ----
-  const CELL = 52;
-
-  function drawGrid(t) {
-    const cols = Math.ceil(w / CELL) + 1;
-    const rows = Math.ceil(h / CELL) + 1;
-
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(233, 214, 172, .11)';
-    ctx.beginPath();
-    for (let c = 0; c < cols; c++) {
-      const x = Math.round(c * CELL) + 0.5;
-      ctx.moveTo(x, 0); ctx.lineTo(x, h);
-    }
-    for (let r = 0; r < rows; r++) {
-      const y = Math.round(r * CELL) + 0.5;
-      ctx.moveTo(0, y); ctx.lineTo(w, y);
-    }
-    ctx.stroke();
-
-    // Узлы: базовая пульсация бегущей волной + подсветка от курсора
-    const reach = 210;
-    for (let c = 0; c < cols; c++) {
-      for (let r = 0; r < rows; r++) {
-        const x = c * CELL;
-        const y = r * CELL;
-        const wave = 0.5 + 0.5 * Math.sin(t * 0.0013 + (x + y) * 0.0075);
-        let energy = wave * 0.62;
-        if (pointer.active) {
-          const d = Math.hypot(x - pointer.x, y - pointer.y);
-          if (d < reach) energy += (1 - d / reach) ** 2;
-        }
-        if (energy < 0.04) continue;
-        const rad = 1.1 + energy * 3.4;
-        ctx.beginPath();
-        ctx.arc(x, y, rad, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(240, 226, 194, ${Math.min(0.82, 0.1 + energy * 0.66)})`;
-        ctx.fill();
-      }
-    }
-  }
-
-  function draw(t = 0) {
+  function draw() {
     ctx.clearRect(0, 0, w, h);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    drawGrid(t);
     for (const m of marks) {
       const s = m.size / 100;                        // пути начерчены в поле 100×100
       ctx.save();
@@ -197,9 +152,9 @@ const TAMGI_PATHS = [
   let raf = null;
   let running = false;
 
-  function loop(t) {
+  function loop() {
     step();
-    draw(t);
+    draw();
     raf = requestAnimationFrame(loop);
   }
 

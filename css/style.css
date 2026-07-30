@@ -196,9 +196,9 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   letter-spacing: .06em;
 }
-/* Монограмма без обрамления: viewBox подрезан по её габаритам (54×38),
-   поэтому знак занимает всю отведённую площадь */
-.logo__mark { width: 50px; height: 35px; color: var(--c-bronze); }
+/* viewBox 100×100 с полями вокруг овала — размер крупнее прежнего 38px,
+   чтобы знак в шапке читался так же уверенно */
+.logo__mark { width: 46px; height: 46px; color: var(--c-bronze); }
 .nav {
   display: flex;
   gap: 26px;
