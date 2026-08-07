@@ -1,6 +1,8 @@
 # Тамга — сайт ресторана
 
-**Сайт:** https://zairush8877-sys.github.io/Tamga/
+**Сайт:** https://tamga-rest.netlify.app
+
+Запасной адрес (GitHub Pages): https://zairush8877-sys.github.io/Tamga/
 
 Одностраничный сайт семейного ресторана этнической кухни «Тамга» (г. Нальчик, ул. Тлостанова, 49): чистый HTML, CSS и JavaScript без сборщиков и зависимостей.
 
