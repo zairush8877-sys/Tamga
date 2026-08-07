@@ -3,6 +3,10 @@
   publish = "."
   command = ""
 
+# Телеграм-бот для правки меню (netlify/functions/tgbot.mjs)
+[functions]
+  directory = "netlify/functions"
+
 # Картинки и шрифты именуются вручную и не меняются — держим их в кеше долго
 [[headers]]
   for = "/img/*"
@@ -23,5 +27,11 @@
 
 [[headers]]
   for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Данные меню правит телеграм-бот — браузер должен перепроверять их всегда
+[[headers]]
+  for = "/data/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
