@@ -587,6 +587,62 @@ a { color: inherit; text-decoration: none; }
   transition: transform .35s ease;
 }
 .dish-card:hover .dish-card__photo img { transform: scale(1.05); }
+
+/* Карусель ракурсов блюда внутри карточки */
+.dish-card__photo.carousel { position: relative; }
+.carousel__track {
+  display: flex;
+  height: 100%;
+  transition: transform .45s cubic-bezier(.33, .8, .3, 1);
+}
+.carousel__track img { flex: 0 0 100%; }
+.carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(43, 33, 24, .45);
+  color: #f6efdf;
+  font-size: 14px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .25s ease, background .25s ease, transform .2s ease;
+}
+.carousel__arrow--prev { left: 10px; }
+.carousel__arrow--next { right: 10px; }
+.dish-card:hover .carousel__arrow,
+.carousel__arrow:focus-visible { opacity: 1; }
+.carousel__arrow:hover { background: rgba(43, 33, 24, .72); transform: translateY(-50%) scale(1.08); }
+.carousel__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.carousel__dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(246, 239, 223, .55);
+  box-shadow: 0 0 4px rgba(43, 33, 24, .4);
+  transition: background .25s ease, transform .25s ease;
+}
+.carousel__dots span.is-active { background: #f6efdf; transform: scale(1.25); }
+/* На сенсорных экранах ховера нет — стрелки видны всегда */
+@media (hover: none) {
+  .carousel__arrow { opacity: .85; }
+}
+
 .dish-card__body { padding: 18px 20px 20px; }
 .dish-card__head {
   display: flex;
