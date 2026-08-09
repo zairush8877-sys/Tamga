@@ -245,8 +245,10 @@ async function cmdSetPhoto(chatId, message) {
 export default async (req) => {
   if (req.method !== 'POST') return new Response('ok');
 
+  // Без настроенного секрета не работаем вовсе (fail closed): единственная
+  // защита вебхука от подделки — заголовок x-telegram-bot-api-secret-token
   const secret = process.env.TG_SECRET;
-  if (secret && req.headers.get('x-telegram-bot-api-secret-token') !== secret) {
+  if (!secret || req.headers.get('x-telegram-bot-api-secret-token') !== secret) {
     return new Response('forbidden', { status: 403 });
   }
 
