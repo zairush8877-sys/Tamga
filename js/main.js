@@ -5,10 +5,9 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const header = document.getElementById('header');
 const progressBar = document.getElementById('scrollProgress');
 const toTop = document.getElementById('toTop');
-const heroPhoto = document.querySelector('.hero__photo');
-const heroContent = document.querySelector('.hero__content');
 
-// Всё, что зависит от прокрутки, — в одном обработчике через requestAnimationFrame
+// Всё, что зависит от прокрутки, — в одном обработчике через requestAnimationFrame.
+// Движение героя и сцен погружения считает js/depth.js через CSS-переменную --p.
 let ticking = false;
 function onScroll() {
   const y = window.scrollY;
@@ -17,14 +16,6 @@ function onScroll() {
 
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
   progressBar.style.width = scrollable > 0 ? `${(y / scrollable) * 100}%` : '0';
-
-  // Параллакс героя: фон уезжает медленнее страницы, текст — быстрее и тает.
-  // Через `translate`, а не `transform`, чтобы не спорить с анимацией Ken Burns.
-  if (!reduceMotion && y < window.innerHeight) {
-    heroPhoto.style.translate = `0 ${y * 0.35}px`;
-    heroContent.style.translate = `0 ${y * 0.18}px`;
-    heroContent.style.opacity = String(Math.max(0, 1 - y / (window.innerHeight * 0.75)));
-  }
   ticking = false;
 }
 window.addEventListener('scroll', () => {
@@ -154,7 +145,7 @@ form.addEventListener('submit', (e) => {
 const revealGroups = [
   { selector: '.section__eyebrow, .section__title, .menu__tabs, .menu__note', stagger: 0 },
   { selector: '.about__text p, .about__features', stagger: 90 },
-  { selector: '.about__card', stagger: 120, extra: 'reveal--zoom' },
+  { selector: '.about__card', stagger: 120, extra: 'reveal--deep' },
   { selector: '.gallery__item', stagger: 70, extra: 'reveal--zoom' },
   { selector: '.booking__text p, .booking__perks', stagger: 100, extra: 'reveal--left' },
   { selector: '.booking__form', stagger: 0, extra: 'reveal--right' },

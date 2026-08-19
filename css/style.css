@@ -256,34 +256,11 @@ a { color: inherit; text-decoration: none; }
 .burger.is-open span:nth-child(2) { opacity: 0; }
 .burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* ---------- Герой ---------- */
+/* ---------- Герой (сцена погружения: обёртка — .jscene, сцена — .jstage) ---------- */
 .hero {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-align: center;
   color: #fff;
   background: var(--c-dark);
-  overflow: hidden;
-}
-.hero__photo {
-  position: absolute;
-  inset: -6%;
-  background: url("../img/hero.webp") center 40% / cover no-repeat;
-  animation: kenBurns 22s ease-in-out infinite alternate;
-  will-change: transform;
-}
-/* Затемнение под текст: фото зала светлое, поэтому вуаль мягкая,
-   но с плотным пятном по центру — там лежит заголовок */
-.hero__photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(rgba(38, 27, 16, .5), rgba(38, 27, 16, .34) 55%, rgba(38, 27, 16, .72)),
-    radial-gradient(ellipse 70% 55% at 50% 48%, rgba(24, 17, 10, .48), rgba(24, 17, 10, .12) 75%);
 }
 /* Живой слой родовых знаков — рисуется в canvas (js/tamgi.js).
    Маска приглушает знаки в центре, где лежит заголовок, но не гасит
@@ -994,6 +971,270 @@ a { color: inherit; text-decoration: none; }
   .section__title::after { flex-basis: 42px; }
 }
 
+/* ============================================================
+   Погружение: сцены «пути вглубь» (js/depth.js пишет --p: 0..1)
+   ============================================================ */
+
+.jscene { position: relative; }
+.jscene--hero { height: 250vh; }
+.jscene--mountains { height: 320vh; }
+.jscene--fire { height: 230vh; }
+.jscene--wall { height: 210vh; }
+
+.jstage {
+  --p: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.jl { position: absolute; inset: 0; }
+
+/* Плёночное зерно поверх кинематографичных сцен */
+.jgrain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+}
+
+/* Вуаль, которой сцена в конце «отдаёт» страницу дальше */
+.jfade {
+  background: var(--c-bg);
+  opacity: calc((var(--p) - .82) * 5.6);
+  pointer-events: none;
+}
+.jfade--dark { background: #241b13; }
+
+/* ---------- Сцена 1: герой (живой зал) ---------- */
+.hero__media {
+  inset: -4%;
+  transform: scale(calc(1 + var(--p) * .38)) translateY(calc(var(--p) * -4%));
+  will-change: transform;
+}
+.hero__media video,
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+.hero__shade {
+  background:
+    linear-gradient(rgba(38, 27, 16, .5), rgba(38, 27, 16, .34) 55%, rgba(38, 27, 16, .72)),
+    radial-gradient(ellipse 70% 55% at 50% 48%, rgba(24, 17, 10, .48), rgba(24, 17, 10, .12) 75%);
+}
+/* при погружении темнота сгущается — «входим внутрь» */
+.hero__shade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 16, 9, .85);
+  opacity: calc(var(--p) * .9);
+}
+.jscene--hero .hero__content {
+  transform: translateY(calc(var(--p) * -9vh)) scale(calc(1 + var(--p) * .18));
+  opacity: calc(1 - var(--p) * 1.7);
+  will-change: transform, opacity;
+}
+.jscene--hero .hero__scroll { opacity: calc(.85 - var(--p) * 4); }
+.jscene--hero .hero__tamgi { opacity: calc(1 - var(--p) * 1.4); }
+
+/* ---------- Сцена 2: горы (Род. Память. Вкус.) ---------- */
+.jscene--mountains .jstage { background: linear-gradient(#e9ddc4, var(--c-bg) 78%); }
+.m-pano {
+  background: center 62% / cover no-repeat;
+  inset: -6% 0 0 0;
+  transform: translateY(calc(var(--p) * 6%)) scale(calc(1.16 - var(--p) * .13));
+  opacity: .94;
+  will-change: transform;
+}
+/* мягкая дымка снизу: к концу сцены поднимается и «передаёт» в пергамент */
+.m-haze {
+  background: linear-gradient(transparent 45%, rgba(242, 235, 221, .65) 82%, var(--c-bg));
+  opacity: calc(.5 + var(--p) * .5);
+  transform: translateY(calc(8vh - var(--p) * 8vh));
+  will-change: transform, opacity;
+}
+.m-words {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding-inline: 6vw;
+}
+.m-word {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(52px, 9vw, 118px);
+  line-height: 1.12;
+  color: var(--c-heading);
+  text-shadow: 0 2px 30px rgba(242, 235, 221, .8);
+  /* каждое слово живёт в своём окне прокрутки: --a появление, --b уход */
+  opacity: calc((var(--p) - var(--a)) * 9);
+  transform:
+    translateY(calc((1 - min(1, max(0, (var(--p) - var(--a)) * 9))) * 40px))
+    scale(calc(.94 + min(1, max(0, (var(--p) - var(--a)) * 9)) * .06));
+  will-change: transform, opacity;
+}
+.m-word--1 { --a: .06; }
+.m-word--2 { --a: .2; }
+.m-word--3 { --a: .34; }
+.m-tagline {
+  margin-top: 4vh;
+  font-size: clamp(17px, 2vw, 23px);
+  letter-spacing: .04em;
+  color: var(--c-text-soft);
+  font-style: italic;
+  opacity: calc((var(--p) - .52) * 6);
+  transform: translateY(calc((1 - min(1, max(0, (var(--p) - .52) * 6))) * 26px));
+}
+
+/* ---------- Сцена 3: огонь (арка очага) ---------- */
+.jscene--fire .jstage { background: radial-gradient(ellipse 90% 70% at 50% 60%, #33241645, transparent), #201710; flex-direction: column; gap: 4vh; }
+.fire__embers { pointer-events: none; }
+.fire__arch {
+  position: relative;
+  width: min(38vh, 78vw);
+  aspect-ratio: 3 / 4.2;
+  border-radius: 50% 50% 14px 14px / 38% 38% 14px 14px;
+  overflow: hidden;
+  border: 1px solid rgba(217, 192, 138, .35);
+  box-shadow: 0 0 80px rgba(255, 140, 50, .18), 0 30px 80px rgba(0, 0, 0, .55);
+  transform: scale(calc(.82 + var(--p) * .3)) translateY(calc(var(--p) * -3vh));
+  will-change: transform;
+}
+.fire__arch video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fire__text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #f5efe4;
+  padding-inline: 6vw;
+  opacity: calc((var(--p) - .12) * 5);
+  transform: translateY(calc((1 - min(1, max(0, (var(--p) - .12) * 5))) * 30px));
+}
+.fire__text .section__eyebrow { color: #d9c08a; }
+.fire__title {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.4vw, 62px);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.fire__sub { max-width: 520px; margin-inline: auto; color: #cdbda4; font-size: 17px; }
+
+/* ---------- Сцена 4: стена рода ---------- */
+.wall__media video,
+.wall__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.wall__media {
+  inset: -4%;
+  transform: scale(calc(1.02 + var(--p) * .22));
+  will-change: transform;
+}
+.wall__shade {
+  background:
+    linear-gradient(rgba(26, 18, 10, .72), rgba(26, 18, 10, .3) 45%, rgba(26, 18, 10, .82)),
+    radial-gradient(ellipse 62% 50% at 50% 52%, rgba(20, 13, 7, .55), transparent 78%);
+}
+.wall__text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #f5efe4;
+  padding-inline: 6vw;
+  opacity: calc((var(--p) - .1) * 5);
+  transform: translateY(calc((1 - min(1, max(0, (var(--p) - .1) * 5))) * 34px)) scale(calc(.96 + min(1, max(0, (var(--p) - .1) * 5)) * .04));
+}
+.wall__title {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.6vw, 66px);
+  font-weight: 700;
+  max-width: 900px;
+  margin: 0 auto 16px;
+  text-shadow: 0 4px 34px rgba(0, 0, 0, .5);
+}
+.wall__sub { max-width: 560px; margin: 0 auto 34px; color: #d9cbb2; font-size: 18px; }
+
+/* ---------- Ночной финал: бронирование, контакты, подвал ---------- */
+.section--night {
+  background: #241b13 url("../img/mountains-night.webp") center bottom / cover no-repeat;
+  background-attachment: scroll;
+  color: #f0e7d6;
+  position: relative;
+}
+.section--night::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(30, 22, 14, .9), rgba(30, 22, 14, .55) 60%, rgba(24, 17, 10, .82));
+  pointer-events: none;
+}
+.section--night > .container { position: relative; z-index: 1; }
+.section--night .section__title { color: #f0e7d6; }
+.section--night .section__eyebrow { color: #d9c08a; }
+.section--night p { color: #cdbda4; }
+.section--night .booking__perks li { color: #cdbda4; }
+.section--night .booking__perks li::before { color: #d9c08a; }
+.section--night .booking__form {
+  background: rgba(42, 32, 21, .82);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(217, 192, 138, .22);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .45);
+}
+.section--night .field label { color: #d9cbb2; }
+.section--night .field input,
+.section--night .field textarea {
+  background: rgba(24, 17, 10, .6);
+  border-color: rgba(217, 192, 138, .28);
+  color: #f0e7d6;
+  color-scheme: dark;
+}
+.section--night .field input::placeholder,
+.section--night .field textarea::placeholder { color: rgba(205, 189, 164, .55); }
+.section--night .field input:focus,
+.section--night .field textarea:focus { border-color: #d9c08a; box-shadow: 0 0 0 3px rgba(217, 192, 138, .18); }
+.section--night .contacts__card {
+  background: rgba(42, 32, 21, .78);
+  border: 1px solid rgba(217, 192, 138, .18);
+  color: #f0e7d6;
+}
+.section--night .contacts__card h3 { color: #d9c08a; }
+.section--night .contacts__card a { color: #f0e7d6; }
+.section--night .contacts__muted { color: #a8977d; }
+.section--night + .footer { background: #1b140c; }
+
+/* Глубокое появление контентных секций между сценами */
+.reveal--deep { transform: translateY(64px) scale(.92); }
+@media (min-width: 900px) {
+  .reveal--deep { filter: blur(7px); transition-property: opacity, transform, filter; }
+  .reveal--deep.is-visible { filter: blur(0); }
+}
+
+/* Мобильные сцены: короче путь, экономнее эффекты */
+@media (max-width: 720px) {
+  .jscene--hero { height: 190vh; }
+  .jscene--mountains { height: 230vh; }
+  .jscene--fire { height: 180vh; }
+  .jscene--wall { height: 170vh; }
+  .jgrain { display: none; }
+  .section--night .booking__form { backdrop-filter: none; }
+}
+
 /* ---------- Уважение к настройке «уменьшить движение» ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1013,4 +1254,9 @@ a { color: inherit; text-decoration: none; }
   .section__title::after { clip-path: none; }
   .menu__panel.is-active .dish-card,
   .menu__panel.is-active .mitem { opacity: 1; }
+  /* сцены погружения замирают в читаемом состоянии */
+  .m-word, .m-tagline, .fire__text, .wall__text { opacity: 1 !important; transform: none !important; }
+  .hero__media, .fire__arch, .wall__media, .m-pano, .m-haze { transform: none !important; }
+  .jfade { opacity: 0 !important; }
+  .reveal--deep { filter: none; }
 }

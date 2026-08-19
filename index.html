@@ -86,22 +86,45 @@
     </div>
   </header>
 
-  <!-- ===== Герой ===== -->
-  <section class="hero" id="hero">
-    <div class="hero__photo" aria-hidden="true"></div>
-    <canvas class="hero__tamgi" id="tamgiCanvas" aria-hidden="true"></canvas>
-    <div class="container hero__content">
-      <p class="hero__eyebrow">Род&nbsp;·&nbsp;Память&nbsp;·&nbsp;Вкус</p>
-      <h1 class="hero__title">Тамга</h1>
-      <p class="hero__subtitle">Семейный ресторан этнической кухни в Нальчике. Кухня, которая рассказывает истории</p>
-      <div class="hero__actions">
-        <a href="#booking" class="btn btn--primary">Забронировать столик</a>
-        <a href="#menu" class="btn btn--ghost">Смотреть меню</a>
+  <!-- ===== Сцена 1: герой — живой зал ===== -->
+  <section class="jscene jscene--hero hero" id="hero" data-scene>
+    <div class="jstage">
+      <div class="jl hero__media" aria-hidden="true">
+        <video class="hero__video" autoplay muted loop playsinline preload="auto" poster="img/hero.webp">
+          <source src="media/hero-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="jl hero__shade" aria-hidden="true"></div>
+      <canvas class="hero__tamgi" id="tamgiCanvas" aria-hidden="true"></canvas>
+      <div class="container hero__content">
+        <p class="hero__eyebrow">Род&nbsp;·&nbsp;Память&nbsp;·&nbsp;Вкус</p>
+        <h1 class="hero__title">Тамга</h1>
+        <p class="hero__subtitle">Семейный ресторан этнической кухни в Нальчике. Кухня, которая рассказывает истории</p>
+        <div class="hero__actions">
+          <a href="#booking" class="btn btn--primary">Забронировать столик</a>
+          <a href="#menu" class="btn btn--ghost">Смотреть меню</a>
+        </div>
+      </div>
+      <a href="#about" class="hero__scroll" aria-label="Листайте вглубь">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+      <div class="jl jfade" style="background:#e9ddc4" aria-hidden="true"></div>
+      <div class="jgrain" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ===== Сцена 2: горы — Род. Память. Вкус. ===== -->
+  <section class="jscene jscene--mountains" data-scene aria-label="Род. Память. Вкус. Он не придуман — он унаследован">
+    <div class="jstage">
+      <div class="jl m-pano" style="background-image:url('img/mountains-dawn.webp')" aria-hidden="true"></div>
+      <div class="jl m-haze" aria-hidden="true"></div>
+      <div class="m-words">
+        <span class="m-word m-word--1">Род.</span>
+        <span class="m-word m-word--2">Память.</span>
+        <span class="m-word m-word--3">Вкус.</span>
+        <p class="m-tagline">Он не придуман — он унаследован</p>
       </div>
     </div>
-    <a href="#about" class="hero__scroll" aria-label="Прокрутить вниз">
-      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-    </a>
   </section>
 
   <!-- ===== О нас ===== -->
@@ -129,6 +152,25 @@
           <p>Хычины и лакумы<br>из собственной пекарни</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== Сцена 3: огонь — очаг перед меню ===== -->
+  <section class="jscene jscene--fire" data-scene aria-label="Кухня живого огня">
+    <div class="jstage">
+      <canvas class="jl fire__embers" id="emberCanvas" aria-hidden="true"></canvas>
+      <div class="fire__arch" aria-hidden="true">
+        <video autoplay muted loop playsinline preload="metadata" poster="img/about-grill.webp">
+          <source src="media/fire-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="fire__text">
+        <p class="section__eyebrow">Мангал и печь</p>
+        <h2 class="fire__title">Кухня живого огня</h2>
+        <p class="fire__sub">Мясо на углях, томление в печи, хычины с раскалённого камня — дальше вас ждёт всё меню</p>
+      </div>
+      <div class="jl jfade" style="background:#ece2cf" aria-hidden="true"></div>
+      <div class="jgrain" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -172,8 +214,27 @@
     </div>
   </section>
 
+  <!-- ===== Сцена 4: стена рода ===== -->
+  <section class="jscene jscene--wall" data-scene aria-label="Знак твоего рода уже на стене">
+    <div class="jstage">
+      <div class="jl wall__media" aria-hidden="true">
+        <video autoplay muted loop playsinline preload="metadata" poster="img/gallery-int-03.webp">
+          <source src="media/wall-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="jl wall__shade" aria-hidden="true"></div>
+      <div class="wall__text">
+        <h2 class="wall__title">Знак твоего рода уже на стене</h2>
+        <p class="wall__sub">За столом «Тамги» место найдётся каждому — забронируйте, и мы будем ждать</p>
+        <a href="#booking" class="btn btn--primary">Забронировать столик</a>
+      </div>
+      <div class="jl jfade jfade--dark" aria-hidden="true"></div>
+      <div class="jgrain" aria-hidden="true"></div>
+    </div>
+  </section>
+
   <!-- ===== Бронирование ===== -->
-  <section class="section section--alt booking" id="booking">
+  <section class="section section--night booking" id="booking">
     <div class="container booking__grid">
       <div class="booking__text">
         <p class="section__eyebrow">Бронирование</p>
@@ -219,7 +280,7 @@
   </section>
 
   <!-- ===== Контакты ===== -->
-  <section class="section contacts" id="contacts">
+  <section class="section section--night contacts" id="contacts">
     <div class="container">
       <p class="section__eyebrow">Контакты</p>
       <h2 class="section__title">Как нас найти</h2>
@@ -275,6 +336,7 @@
   <script src="data/menu.js"></script>
   <script src="js/menu.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/depth.js"></script>
   <script src="js/tamgi.js"></script>
 </body>
 </html>
