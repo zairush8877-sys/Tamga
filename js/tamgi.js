@@ -1,6 +1,8 @@
-// ===== Родовые тамги: живой слой поверх заглавного экрана =====
-// Знаки перерисованы с рельефной стены в зале ресторана. Каждый дрейфует
-// с инерцией, упруго отскакивает от краёв и разлетается от курсора.
+// ===== Родовые тамги: тайные знаки на заглавном экране =====
+// Знаки перерисованы с рельефной стены в зале ресторана. Они не летают —
+// они проявляются из глубины, как тиснение на старой стене, недолго живут
+// и растворяются, уступая место другим. Курсор — свет факела: знак рядом
+// с ним разгорается тёплым золотом, как резьба, выхваченная из темноты.
 
 const TAMGI_PATHS = [
   // трискелион — три луча с загнутыми концами
@@ -50,28 +52,39 @@ const TAMGI_PATHS = [
   const pointer = { x: -9999, y: -9999, active: false };
 
   function countForWidth(px) {
-    if (px < 640) return 9;
-    if (px < 1100) return 14;
-    return 20;
+    if (px < 640) return 7;
+    if (px < 1100) return 10;
+    return 14;
+  }
+
+  // Жизнь знака: тихое проявление -> присутствие с «дыханием» -> растворение.
+  // Времена в секундах; каждый знак живёт в своём ритме.
+  function spawn(startMidLife) {
+    const depth = 0.35 + Math.random() * 0.65;       // глубина: дальние — меньше и тусклее
+    const size = 40 + depth * 78;
+    const mark = {
+      path: paths[Math.floor(Math.random() * paths.length)],
+      size,
+      x: size * 0.7 + Math.random() * Math.max(1, w - size * 1.4),
+      y: size * 0.7 + Math.random() * Math.max(1, h - size * 1.4),
+      rot: (Math.random() - 0.5) * 0.28,             // лёгкий наклон, без вращения
+      driftX: (Math.random() - 0.5) * 0.045,         // едва заметный дрейф
+      driftY: -0.02 - Math.random() * 0.035,         // чуть всплывают, как дым
+      depth,
+      breathPhase: Math.random() * Math.PI * 2,
+      breathSpeed: 0.25 + Math.random() * 0.3,
+      fadeIn: 2.6 + Math.random() * 2.2,
+      hold: 5 + Math.random() * 7,
+      fadeOut: 3 + Math.random() * 2.5,
+      age: 0,
+      lit: 0,
+    };
+    if (startMidLife) mark.age = Math.random() * (mark.fadeIn + mark.hold);
+    return mark;
   }
 
   function build() {
-    const n = countForWidth(w);
-    marks = Array.from({ length: n }, (_, i) => {
-      const size = 46 + Math.random() * 54;          // сторона знака в пикселях
-      return {
-        path: paths[i % paths.length],
-        size,
-        r: size * 0.5,
-        x: size + Math.random() * Math.max(1, w - size * 2),
-        y: size + Math.random() * Math.max(1, h - size * 2),
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        rot: Math.random() * Math.PI * 2,
-        vrot: (Math.random() - 0.5) * 0.0035,
-        alpha: 0.3 + Math.random() * 0.32,
-      };
-    });
+    marks = Array.from({ length: countForWidth(w) }, () => spawn(true));
   }
 
   function resize() {
@@ -85,43 +98,40 @@ const TAMGI_PATHS = [
     build();
   }
 
-  function step() {
-    for (const m of marks) {
-      m.x += m.vx;
-      m.y += m.vy;
-      m.rot += m.vrot;
+  // Огибающая жизни: 0 -> 1 -> 0
+  function envelope(m) {
+    if (m.age < m.fadeIn) {
+      const t = m.age / m.fadeIn;
+      return t * t;                                  // проявление ускоряется к концу
+    }
+    if (m.age < m.fadeIn + m.hold) return 1;
+    const t = (m.age - m.fadeIn - m.hold) / m.fadeOut;
+    return Math.max(0, 1 - t * t);
+  }
 
-      // Курсор расталкивает знаки — сила спадает к краю радиуса
+  let time = 0;
+  function step(dt) {
+    time += dt;
+    for (let i = 0; i < marks.length; i++) {
+      const m = marks[i];
+      m.age += dt;
+      m.x += m.driftX;
+      m.y += m.driftY;
+
+      // Свет «факела»: чем ближе курсор, тем ярче разгорается знак
+      let target = 0;
       if (pointer.active) {
-        const dx = m.x - pointer.x;
-        const dy = m.y - pointer.y;
-        const dist = Math.hypot(dx, dy);
-        const reach = 170;
-        if (dist < reach && dist > 0.01) {
-          const push = (1 - dist / reach) * 0.55;
-          m.vx += (dx / dist) * push;
-          m.vy += (dy / dist) * push;
+        const dist = Math.hypot(m.x - pointer.x, m.y - pointer.y);
+        const reach = 230;
+        if (dist < reach) {
+          const k = 1 - dist / reach;
+          target = k * k;
         }
       }
+      m.lit += (target - m.lit) * Math.min(1, dt * 4);   // разгорается и гаснет плавно
 
-      // Упругий отскок: скорость гасится, знак возвращается внутрь поля
-      if (m.x < m.r) { m.x = m.r; m.vx = Math.abs(m.vx) * 0.82; }
-      else if (m.x > w - m.r) { m.x = w - m.r; m.vx = -Math.abs(m.vx) * 0.82; }
-      if (m.y < m.r) { m.y = m.r; m.vy = Math.abs(m.vy) * 0.82; }
-      else if (m.y > h - m.r) { m.y = h - m.r; m.vy = -Math.abs(m.vy) * 0.82; }
-
-      // Трение и нижний порог скорости, чтобы дрейф не затухал совсем
-      m.vx *= 0.992;
-      m.vy *= 0.992;
-      const speed = Math.hypot(m.vx, m.vy);
-      if (speed < 0.12) {
-        const k = 0.12 / (speed || 0.0001);
-        m.vx *= k;
-        m.vy *= k;
-      } else if (speed > 3.2) {
-        const k = 3.2 / speed;
-        m.vx *= k;
-        m.vy *= k;
+      if (m.age > m.fadeIn + m.hold + m.fadeOut || m.y < -m.size) {
+        marks[i] = spawn(false);
       }
     }
   }
@@ -131,19 +141,30 @@ const TAMGI_PATHS = [
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     for (const m of marks) {
-      const s = m.size / 100;                        // пути начерчены в поле 100×100
+      const env = reduce ? 1 : envelope(m);
+      if (env <= 0.004) continue;
+      const breath = 0.78 + 0.22 * Math.sin(time * m.breathSpeed + m.breathPhase);
+      // Базовое присутствие — почти неразличимое, как тиснение на стене
+      const base = (0.07 + m.depth * 0.12) * env * breath;
+      const alpha = Math.min(0.9, base + m.lit * 0.6);
+
+      // Знак «выходит из глубины»: за жизнь едва заметно приближается
+      const grow = 0.94 + 0.1 * Math.min(1, m.age / (m.fadeIn + m.hold));
+      const s = (m.size / 100) * grow;
+
       ctx.save();
       ctx.translate(m.x, m.y);
       ctx.rotate(m.rot);
       ctx.scale(s, s);
       ctx.translate(-50, -50);
-      // Двойная обводка: тёмная подложка держит знак читаемым на светлых
-      // участках фото, поверх — сам золотистый штрих
-      ctx.lineWidth = 5.2 / s;
-      ctx.strokeStyle = `rgba(46, 32, 18, ${m.alpha * 0.5})`;
-      ctx.stroke(m.path);
-      ctx.lineWidth = 3.2 / s;
-      ctx.strokeStyle = `rgba(238, 222, 186, ${m.alpha})`;
+      // Тёплое свечение появляется только рядом со «светом факела»
+      if (m.lit > 0.02) {
+        ctx.shadowColor = `rgba(255, 196, 110, ${m.lit * 0.85})`;
+        ctx.shadowBlur = (10 + 26 * m.lit) / s;
+      }
+      const warm = m.lit;
+      ctx.lineWidth = 2.7 / s;
+      ctx.strokeStyle = `rgba(${224 + warm * 31}, ${206 + warm * 6}, ${172 - warm * 30}, ${alpha})`;
       ctx.stroke(m.path);
       ctx.restore();
     }
@@ -151,9 +172,12 @@ const TAMGI_PATHS = [
 
   let raf = null;
   let running = false;
+  let last = 0;
 
-  function loop() {
-    step();
+  function loop(now) {
+    const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
+    last = now;
+    step(dt);
     draw();
     raf = requestAnimationFrame(loop);
   }
@@ -161,7 +185,8 @@ const TAMGI_PATHS = [
   function start() {
     if (running || reduce) return;
     running = true;
-    loop();
+    last = performance.now();
+    raf = requestAnimationFrame(loop);
   }
 
   function stop() {
