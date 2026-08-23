@@ -976,10 +976,10 @@ a { color: inherit; text-decoration: none; }
    ============================================================ */
 
 .jscene { position: relative; }
-.jscene--hero { height: 250vh; }
-.jscene--mountains { height: 320vh; }
-.jscene--fire { height: 230vh; }
-.jscene--wall { height: 210vh; }
+.jscene--hero { height: 300vh; }
+.jscene--mountains { height: 380vh; }
+.jscene--fire { height: 260vh; }
+.jscene--wall { height: 240vh; }
 
 .jstage {
   --p: 0;
@@ -1015,7 +1015,7 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Сцена 1: герой (живой зал) ---------- */
 .hero__media {
   inset: -4%;
-  transform: scale(calc(1 + var(--p) * .6));
+  transform: scale(calc(1 + var(--p) * .8));
   transform-origin: 50% 46%;
   will-change: transform;
 }
@@ -1055,7 +1055,7 @@ a { color: inherit; text-decoration: none; }
 .m-pano {
   background: center 58% / cover no-repeat;
   inset: -6%;
-  transform: scale(calc(1 + var(--p) * .55));
+  transform: scale(calc(1 + var(--p) * .7));
   transform-origin: 50% 42%;
   opacity: .96;
   will-change: transform;
@@ -1085,7 +1085,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--c-heading);
   text-shadow: 0 2px 34px rgba(242, 235, 221, .85);
   /* --lp: локальный прогресс окна слова (0..1) */
-  transform: scale(calc(.45 + var(--lp) * 1.85));
+  transform: scale(calc(.38 + var(--lp) * 2.3));
   opacity: calc(min(1, var(--lp) * 5) * min(1, (1 - var(--lp)) * 4));
   will-change: transform, opacity;
 }
@@ -1115,7 +1115,7 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   border: 1px solid rgba(217, 192, 138, .35);
   box-shadow: 0 0 80px rgba(255, 140, 50, .18), 0 30px 80px rgba(0, 0, 0, .55);
-  transform: scale(calc(.5 + var(--p) * 1.1));
+  transform: scale(calc(.42 + var(--p) * 1.4));
   will-change: transform;
 }
 .fire__arch video {
@@ -1234,10 +1234,10 @@ a { color: inherit; text-decoration: none; }
 
 /* Мобильные сцены: короче путь, экономнее эффекты */
 @media (max-width: 720px) {
-  .jscene--hero { height: 190vh; }
-  .jscene--mountains { height: 230vh; }
-  .jscene--fire { height: 180vh; }
-  .jscene--wall { height: 170vh; }
+  .jscene--hero { height: 230vh; }
+  .jscene--mountains { height: 280vh; }
+  .jscene--fire { height: 200vh; }
+  .jscene--wall { height: 190vh; }
   .jgrain { display: none; }
   .section--night .booking__form { backdrop-filter: none; }
 }
