@@ -39,10 +39,28 @@ jobs:
           git push -f origin gh-pages
 
       # Пуш от GITHUB_TOKEN не всегда запускает сборку Pages сам по себе,
-      # поэтому просим её явно через API
+      # поэтому просим её явно через API и ждём результата
       - name: Запросить сборку Pages
         run: |
           curl -sS -X POST \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/pages/builds" || true
+
+      - name: Дождаться результата сборки Pages
+        run: |
+          echo "Настройки Pages:"
+          curl -sS -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages" || true
+          for i in $(seq 1 12); do
+            sleep 10
+            out=$(curl -sS -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pages/builds/latest")
+            echo "$out"
+            status=$(echo "$out" | python3 -c "import json,sys; print(json.load(sys.stdin).get('status'))" 2>/dev/null || echo "?")
+            [ "$status" = "built" ] && { echo "Pages собран"; exit 0; }
+            [ "$status" = "errored" ] && { echo "Сборка Pages УПАЛА (см. error выше)"; exit 0; }
+          done
+          echo "Сборка не завершилась за 2 минуты"
