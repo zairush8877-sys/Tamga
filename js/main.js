@@ -143,7 +143,7 @@ form.addEventListener('submit', (e) => {
 // Элементы, которые проявляются при прокрутке. Для сеток задаём каскад:
 // каждый следующий элемент стартует чуть позже соседа.
 const revealGroups = [
-  { selector: '.section__eyebrow, .section__title, .menu__tabs, .menu__note', stagger: 0 },
+  { selector: '.section__eyebrow, .section__title, .menu__tabs, .menu__note', stagger: 0, extra: 'reveal--deep' },
   { selector: '.about__text p, .about__features', stagger: 90 },
   { selector: '.about__card', stagger: 120, extra: 'reveal--deep' },
   { selector: '.gallery__item', stagger: 70, extra: 'reveal--zoom' },

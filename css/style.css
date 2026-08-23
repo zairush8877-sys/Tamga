@@ -1007,7 +1007,7 @@ a { color: inherit; text-decoration: none; }
 /* Вуаль, которой сцена в конце «отдаёт» страницу дальше */
 .jfade {
   background: var(--c-bg);
-  opacity: calc((var(--p) - .82) * 5.6);
+  opacity: calc((var(--p) - .86) * 7.2);
   pointer-events: none;
 }
 .jfade--dark { background: #241b13; }
@@ -1015,7 +1015,8 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Сцена 1: герой (живой зал) ---------- */
 .hero__media {
   inset: -4%;
-  transform: scale(calc(1 + var(--p) * .38)) translateY(calc(var(--p) * -4%));
+  transform: scale(calc(1 + var(--p) * .6));
+  transform-origin: 50% 46%;
   will-change: transform;
 }
 .hero__media video,
@@ -1038,9 +1039,11 @@ a { color: inherit; text-decoration: none; }
   background: rgba(24, 16, 9, .85);
   opacity: calc(var(--p) * .9);
 }
+/* текст не уезжает вверх, а летит НА зрителя и проходит сквозь камеру */
 .jscene--hero .hero__content {
-  transform: translateY(calc(var(--p) * -9vh)) scale(calc(1 + var(--p) * .18));
-  opacity: calc(1 - var(--p) * 1.7);
+  transform: scale(calc(1 + var(--p) * 1.15));
+  transform-origin: 50% 44%;
+  opacity: calc(1 - var(--p) * 2.3);
   will-change: transform, opacity;
 }
 .jscene--hero .hero__scroll { opacity: calc(.85 - var(--p) * 4); }
@@ -1048,52 +1051,57 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Сцена 2: горы (Род. Память. Вкус.) ---------- */
 .jscene--mountains .jstage { background: linear-gradient(#e9ddc4, var(--c-bg) 78%); }
+/* камера всю сцену едет ВГЛУБЬ, к Эльбрусу */
 .m-pano {
-  background: center 62% / cover no-repeat;
-  inset: -6% 0 0 0;
-  transform: translateY(calc(var(--p) * 6%)) scale(calc(1.16 - var(--p) * .13));
-  opacity: .94;
+  background: center 58% / cover no-repeat;
+  inset: -6%;
+  transform: scale(calc(1 + var(--p) * .55));
+  transform-origin: 50% 42%;
+  opacity: .96;
   will-change: transform;
 }
 /* мягкая дымка снизу: к концу сцены поднимается и «передаёт» в пергамент */
 .m-haze {
   background: linear-gradient(transparent 45%, rgba(242, 235, 221, .65) 82%, var(--c-bg));
-  opacity: calc(.5 + var(--p) * .5);
-  transform: translateY(calc(8vh - var(--p) * 8vh));
-  will-change: transform, opacity;
+  opacity: calc(.35 + var(--p) * .65);
+  will-change: opacity;
 }
+/* слова вырастают из глубины, проходят сквозь камеру и уступают место следующему */
 .m-words {
-  position: relative;
-  z-index: 2;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
   text-align: center;
   padding-inline: 6vw;
+  pointer-events: none;
 }
 .m-word {
-  display: block;
+  grid-area: 1 / 1;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(52px, 9vw, 118px);
-  line-height: 1.12;
+  font-size: clamp(60px, 11vw, 150px);
+  line-height: 1;
   color: var(--c-heading);
-  text-shadow: 0 2px 30px rgba(242, 235, 221, .8);
-  /* каждое слово живёт в своём окне прокрутки: --a появление, --b уход */
-  opacity: calc((var(--p) - var(--a)) * 9);
-  transform:
-    translateY(calc((1 - min(1, max(0, (var(--p) - var(--a)) * 9))) * 40px))
-    scale(calc(.94 + min(1, max(0, (var(--p) - var(--a)) * 9)) * .06));
+  text-shadow: 0 2px 34px rgba(242, 235, 221, .85);
+  /* --lp: локальный прогресс окна слова (0..1) */
+  transform: scale(calc(.45 + var(--lp) * 1.85));
+  opacity: calc(min(1, var(--lp) * 5) * min(1, (1 - var(--lp)) * 4));
   will-change: transform, opacity;
 }
-.m-word--1 { --a: .06; }
-.m-word--2 { --a: .2; }
-.m-word--3 { --a: .34; }
+.m-word--1 { --lp: clamp(0, (var(--p) - .04) * 3.85, 1); }  /* окно ~.04–.30 */
+.m-word--2 { --lp: clamp(0, (var(--p) - .30) * 3.85, 1); }  /* ~.30–.56 */
+.m-word--3 { --lp: clamp(0, (var(--p) - .56) * 3.85, 1); }  /* ~.56–.82 */
 .m-tagline {
-  margin-top: 4vh;
-  font-size: clamp(17px, 2vw, 23px);
+  grid-area: 1 / 1;
+  align-self: center;
+  transform: translateY(16vh) scale(calc(.85 + min(1, max(0, (var(--p) - .7) * 4.5)) * .15));
+  font-size: clamp(18px, 2.2vw, 26px);
   letter-spacing: .04em;
-  color: var(--c-text-soft);
+  color: var(--c-heading);
   font-style: italic;
-  opacity: calc((var(--p) - .52) * 6);
-  transform: translateY(calc((1 - min(1, max(0, (var(--p) - .52) * 6))) * 26px));
+  text-shadow: 0 2px 24px rgba(242, 235, 221, .9);
+  opacity: calc((var(--p) - .7) * 4.5);
 }
 
 /* ---------- Сцена 3: огонь (арка очага) ---------- */
@@ -1107,7 +1115,7 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   border: 1px solid rgba(217, 192, 138, .35);
   box-shadow: 0 0 80px rgba(255, 140, 50, .18), 0 30px 80px rgba(0, 0, 0, .55);
-  transform: scale(calc(.82 + var(--p) * .3)) translateY(calc(var(--p) * -3vh));
+  transform: scale(calc(.5 + var(--p) * 1.1));
   will-change: transform;
 }
 .fire__arch video {
@@ -1117,7 +1125,6 @@ a { color: inherit; text-decoration: none; }
 }
 .fire__text {
   position: relative;
-  z-index: 2;
   text-align: center;
   color: #f5efe4;
   padding-inline: 6vw;
@@ -1143,7 +1150,8 @@ a { color: inherit; text-decoration: none; }
 }
 .wall__media {
   inset: -4%;
-  transform: scale(calc(1.02 + var(--p) * .22));
+  transform: scale(calc(1.02 + var(--p) * .5));
+  transform-origin: 50% 42%;
   will-change: transform;
 }
 .wall__shade {
@@ -1153,7 +1161,6 @@ a { color: inherit; text-decoration: none; }
 }
 .wall__text {
   position: relative;
-  z-index: 2;
   text-align: center;
   color: #f5efe4;
   padding-inline: 6vw;
