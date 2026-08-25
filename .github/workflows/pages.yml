@@ -8,6 +8,7 @@ on:
       - main
       - claude/restaurant-website-5t4n76
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: write

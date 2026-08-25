@@ -36,16 +36,28 @@
 
 ## Телеграм-бот для правки меню
 
-Функция `netlify/functions/tgbot.mjs` — вебхук телеграм-бота, которым владелец меняет цены и фото прямо с телефона. Бот понимает русские команды («цена сырники 420», «скрыть …», «показать …», фото с подписью-названием блюда) и коммитит правку в `data/menu.js` (фото — в `img/tg/`) через GitHub API; Netlify после коммита сам обновляет сайт за 1–2 минуты.
+Владелец меняет цены и фотографии прямо из телеграма: «цена сырники 420»,
+«скрыть …», «показать …» или фотография с подписью-названием блюда. Бот правит
+`data/menu.js` (фото кладёт в `img/tg/`), коммитит и публикует сайт.
+
+Сервера у сайта нет, поэтому бот живёт в GitHub Actions: workflow
+`.github/workflows/tgbot.yml` раз в несколько минут запускает
+`scripts/tgbot-poll.mjs`, который забирает новые сообщения у Telegram
+(long polling), вносит правки и вызывает публикацию. Правка доезжает до
+сайта за несколько минут; для публичных репозиториев Actions бесплатны.
 
 Подключение (один раз):
 
 1. В Telegram у **@BotFather**: `/newbot` → получить токен.
-2. На GitHub: Settings → Developer settings → Fine-grained tokens → токен только для этого репозитория с правом **Contents: Read and write**.
-3. В Netlify (Site configuration → Environment variables) задать: `TG_BOT_TOKEN`, `TG_SECRET` (любая придуманная строка), `TG_ADMINS` (пока пусто), `GH_TOKEN`. Затем Deploys → Trigger deploy.
-4. Открыть в браузере (подставив токен и секрет):
-   `https://api.telegram.org/bot<ТОКЕН>/setWebhook?url=https://tamga-rest.netlify.app/.netlify/functions/tgbot&secret_token=<СЕКРЕТ>`
-5. Написать боту `/start` — он ответит вашим chat id. Вписать его в `TG_ADMINS`, снова Trigger deploy — готово.
+2. GitHub → Settings → Secrets and variables → Actions → **New repository secret**:
+   `TG_BOT_TOKEN` = токен от BotFather, `TG_ADMINS` = пока любое число.
+3. Написать боту `/start` и подождать несколько минут — он ответит вашим chat id.
+4. Вписать этот id в секрет `TG_ADMINS` (несколько владельцев — через запятую).
+
+Мгновенный вариант (когда снова заработает выкладка на Netlify):
+функция `netlify/functions/tgbot.mjs` — тот же бот, но вебхуком, без задержки.
+Ему нужны переменные `TG_BOT_TOKEN`, `TG_SECRET`, `TG_ADMINS`, `GH_TOKEN`
+и вызов `setWebhook` с адресом функции.
 
 ## Запуск локально
 
@@ -81,12 +93,13 @@ css/style.css   — стили, светлая тема, орнаменты, а�
 js/menu.js      — рендер меню из data/menu.js и карусель фото в карточках
 js/main.js      — мобильное меню, вкладки, лайтбокс, валидация формы, scroll-анимации
 js/tamgi.js     — векторы 16 родовых тамг и физика их движения на canvas
-netlify/functions/tgbot.mjs — телеграм-бот для правки цен и фото
+scripts/tgbot-poll.mjs — телеграм-бот (опрос из GitHub Actions)
+netlify/functions/tgbot.mjs — он же вебхуком, если вернётся Netlify
 img/            — фотографии (hero, gallery-NN, dish-* с ракурсами -2/-3, about-*)
 ```
 
 ## Что осталось доделать
 
 - **Отправка формы**: заявка подтверждается только на странице; подключите бэкенд или сервис форм в `js/main.js`
-- **Телеграм-бот**: код готов, нужно один раз задать токены (см. раздел выше)
+- **Телеграм-бот**: код готов, нужно один раз задать секреты `TG_BOT_TOKEN` и `TG_ADMINS` (см. раздел выше)
 - Цены актуальны на меню от 29 июня — дальше правятся ботом или в `data/menu.js`
