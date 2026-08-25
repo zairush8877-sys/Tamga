@@ -1,8 +1,6 @@
 # Тамга — сайт ресторана
 
-**Сайт:** https://tamga-rest.netlify.app
-
-Запасной адрес (GitHub Pages): https://zairush8877-sys.github.io/Tamga/
+**Сайт:** https://zairush8877-sys.github.io/Tamga/ (готовится переезд на https://tamga-rest.ru)
 
 Одностраничный сайт семейного ресторана этнической кухни «Тамга» (г. Нальчик, ул. Тлостанова, 49): чистый HTML, CSS и JavaScript без сборщиков и зависимостей.
 
@@ -28,10 +26,13 @@
 
 Сайт статический, собирать нечего — публикуется как есть из корня репозитория.
 
-- **Netlify** (основной адрес): подключён к ветке `main`, настройки в `netlify.toml`.
-  Пуш в `main` — и сайт обновляется сам.
-- **GitHub Pages** (запасной адрес): workflow `.github/workflows/pages.yml` при push
-  переносит файлы в ветку `gh-pages`, откуда их отдаёт Pages.
+- **GitHub Pages** (основной адрес): workflow `.github/workflows/pages.yml` при push
+  переносит файлы в ветку `gh-pages` и запрашивает сборку через API. В настройках
+  репозитория: Settings → Pages → Source: Deploy from a branch → `gh-pages` / `(root)`.
+  Свой домен — файл `CNAME` в корне репозитория плюс DNS-записи у регистратора.
+- **Netlify** (`netlify.toml`): выкладка приостановлена — на бесплатном тарифе
+  у команды закончились минуты сборки. Старая версия остаётся доступной по
+  https://tamga-rest.netlify.app до конца расчётного периода.
 
 ## Телеграм-бот для правки меню
 
