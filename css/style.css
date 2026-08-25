@@ -72,6 +72,16 @@ a { color: inherit; text-decoration: none; }
   transition: width .1s linear;
 }
 
+/* Мерцание угольков по всему сайту (js/motes.js) */
+.motes {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  pointer-events: none;
+}
+
 /* Кнопка «наверх» */
 .to-top {
   position: fixed;
@@ -1107,7 +1117,7 @@ a { color: inherit; text-decoration: none; }
   height: min(34vh, 54vw);
   border-radius: 50% 50% 10px 10px / 58% 58% 10px 10px;
   background:
-    radial-gradient(ellipse 40% 26% at 50% 99%, rgba(255, 132, 44, .30), transparent 58%),
+    radial-gradient(ellipse 46% 30% at 50% 99%, rgba(255, 140, 50, .42), transparent 60%),
     radial-gradient(ellipse 48% 24% at 50% 2%, rgba(198, 162, 118, .10), transparent 60%),
     linear-gradient(#4a3927 0%, #3a2b1c 40%, #2a1f14 74%, #1d150d 100%);
   box-shadow:
@@ -1156,32 +1166,19 @@ a { color: inherit; text-decoration: none; }
     inset 0 0 42px 20px rgba(6, 3, 1, .92),
     0 0 70px rgba(255, 122, 34, .42);
 }
-.fire__mouth video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 88%;
-  /* Врезаемся в языки пламени: в кадре остаётся только огонь, без подачи */
-  transform: scale(2.6);
-  transform-origin: 50% 88%;
-  filter: brightness(.62) saturate(1.55) contrast(1.25) sepia(.3) hue-rotate(-12deg) blur(1px);
-}
-/* Всё в устье уводим в огненный тон — от подачи не остаётся и намёка */
-.fire__mouth::after {
-  content: "";
+/* Пламя рисует js/fire.js — оно живое и никогда не повторяется */
+.fire__flames {
   position: absolute;
   inset: 0;
-  background: rgba(255, 108, 26, .55);
-  mix-blend-mode: color;
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 /* В печи видно только зарево: края устья — глухая темнота */
 .fire__mouth-shade {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 54% 40% at 50% 80%, rgba(255, 134, 38, .30), transparent 62%),
-    radial-gradient(ellipse 62% 50% at 50% 76%, transparent 18%, rgba(9, 5, 2, .72) 62%, rgba(5, 2, 1, .96) 100%);
+  background: radial-gradient(ellipse 66% 56% at 50% 78%, transparent 30%, rgba(9, 5, 2, .55) 70%, rgba(5, 2, 1, .9) 100%);
 }
 
 /* Под печи — каменная плита, на которой она стоит */
