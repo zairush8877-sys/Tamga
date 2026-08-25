@@ -38,11 +38,29 @@ jobs:
           git commit -m "Публикация сайта из ${GITHUB_SHA::7}" || echo "нечего публиковать"
           git push -f origin gh-pages
 
-      # Пуш от GITHUB_TOKEN не всегда запускает сборку Pages сам по себе,
-      # поэтому просим её явно через API
-      - name: Запросить сборку Pages
+      # Сайт Pages может оказаться отключённым (GET /pages -> 404) — тогда
+      # пробуем создать его заново из ветки gh-pages и просим сборку
+      - name: Включить Pages и запросить сборку
         run: |
-          curl -sS -X POST \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pages/builds" || true
+          api="https://api.github.com/repos/${{ github.repository }}/pages"
+          auth='Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
+          acc='Accept: application/vnd.github+json'
+
+          code=$(curl -s -o /tmp/pages.json -w '%{http_code}' -H "$auth" -H "$acc" "$api")
+          echo "GET /pages -> $code"; cat /tmp/pages.json
+          if [ "$code" = "404" ]; then
+            echo "Pages отключён — создаю заново из gh-pages…"
+            curl -sS -X POST -H "$auth" -H "$acc" "$api" \
+              -d '{"source":{"branch":"gh-pages","path":"/"}}' || true
+          fi
+
+          curl -sS -X POST -H "$auth" -H "$acc" "$api/builds" || true
+          for i in $(seq 1 12); do
+            sleep 10
+            out=$(curl -sS -H "$auth" -H "$acc" "$api/builds/latest")
+            status=$(echo "$out" | python3 -c "import json,sys; print(json.load(sys.stdin).get('status'))" 2>/dev/null || echo "?")
+            echo "статус сборки: $status"
+            [ "$status" = "built" ] && { echo "Pages собран"; exit 0; }
+            [ "$status" = "errored" ] && { echo "Сборка Pages УПАЛА:"; echo "$out"; exit 0; }
+          done
+          echo "Сборка не завершилась за 2 минуты"
