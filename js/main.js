@@ -102,41 +102,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') openLightbox(lightboxIndex + 1);
 });
 
-// Форма бронирования: минимальная дата — сегодня
-const dateInput = document.getElementById('date');
-dateInput.min = new Date().toISOString().split('T')[0];
-
-// Валидация и отправка (демо: без бэкенда заявка просто подтверждается на странице)
-const form = document.getElementById('bookingForm');
-const status = document.getElementById('bookingStatus');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  let valid = true;
-  form.querySelectorAll('[required]').forEach((field) => {
-    const ok = field.value.trim() !== '' && field.checkValidity();
-    field.classList.toggle('is-invalid', !ok);
-    if (!ok) valid = false;
-  });
-
-  const phone = form.phone.value.replace(/[^\d+]/g, '');
-  if (phone.length < 10) {
-    form.phone.classList.add('is-invalid');
-    valid = false;
-  }
-
-  status.classList.remove('is-ok', 'is-error');
-  if (!valid) {
-    status.textContent = 'Пожалуйста, заполните выделенные поля.';
-    status.classList.add('is-error');
-    return;
-  }
-
-  const name = form.name.value.trim();
-  status.textContent = `Спасибо, ${name}! Заявка принята — мы перезвоним в течение 15 минут.`;
-  status.classList.add('is-ok');
-  form.reset();
-  dateInput.min = new Date().toISOString().split('T')[0];
-});
 
 // ===== Анимации появления =====
 
@@ -148,7 +113,7 @@ const revealGroups = [
   { selector: '.about__card', stagger: 120, extra: 'reveal--deep' },
   { selector: '.gallery__item', stagger: 70, extra: 'reveal--zoom' },
   { selector: '.booking__text p, .booking__perks', stagger: 100, extra: 'reveal--left' },
-  { selector: '.booking__form', stagger: 0, extra: 'reveal--right' },
+  { selector: '.booking__call', stagger: 0, extra: 'reveal--right' },
   { selector: '.contacts__card', stagger: 130 },
 ];
 

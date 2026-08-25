@@ -232,43 +232,22 @@
       <div class="booking__text">
         <p class="section__eyebrow">Бронирование</p>
         <h2 class="section__title">Забронируйте столик</h2>
-        <p>Оставьте заявку — мы перезвоним и подтвердим бронь. Быстрее всего забронировать по телефону: <a href="tel:+79287107373">+7&nbsp;(928)&nbsp;710-73-73</a>.</p>
+        <p>Стол бронируем по телефону: звонок занимает минуту, и мы сразу скажем, что свободно. Отвечаем в часы работы.</p>
         <ul class="booking__perks">
           <li>Работаем ежедневно с 9:00 до 23:00</li>
           <li>Завтраки — с 9:00 до 16:00</li>
           <li>Летний сад «Тамга» на территории отеля Altum</li>
         </ul>
       </div>
-      <form class="booking__form" id="bookingForm" novalidate>
-        <div class="field">
-          <label for="name">Имя</label>
-          <input type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
+      <div class="booking__call">
+        <p class="booking__call-label">Звонок в ресторан</p>
+        <a class="booking__phone" href="tel:+79287107373">+7&nbsp;(928)&nbsp;710-73-73</a>
+        <div class="booking__actions">
+          <a href="tel:+79287107373" class="btn btn--primary">Позвонить</a>
+          <a href="https://instagram.com/tamga_rest" class="btn btn--ghost" target="_blank" rel="noopener">Написать в Instagram</a>
         </div>
-        <div class="field">
-          <label for="phone">Телефон</label>
-          <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="date">Дата</label>
-            <input type="date" id="date" name="date" required>
-          </div>
-          <div class="field">
-            <label for="time">Время</label>
-            <input type="time" id="time" name="time" min="09:00" max="23:00" required>
-          </div>
-          <div class="field">
-            <label for="guests">Гостей</label>
-            <input type="number" id="guests" name="guests" min="1" max="40" value="2" required>
-          </div>
-        </div>
-        <div class="field">
-          <label for="comment">Комментарий</label>
-          <textarea id="comment" name="comment" rows="3" placeholder="Повод, пожелания к столику…"></textarea>
-        </div>
-        <button type="submit" class="btn btn--primary btn--full">Отправить заявку</button>
-        <p class="booking__status" id="bookingStatus" role="status"></p>
-      </form>
+        <p class="booking__note">Без анкет и заявок — просто позвоните, и мы подберём стол под ваш повод</p>
+      </div>
     </div>
   </section>
 

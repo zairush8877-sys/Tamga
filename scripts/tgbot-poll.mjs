@@ -27,7 +27,9 @@ const HELP = [
   '• скрыть сырники — убрать блюдо с сайта',
   '• показать сырники — вернуть блюдо на сайт',
   '• фото сырники — какие фото стоят у блюда',
-  '• пришлите фотографию с подписью «сырники» — она станет главным фото',
+  '• пришлите фото с подписью «сырники» — оно станет главным фото блюда',
+  '  (можно сразу альбом — остальные снимки станут ракурсами в карусели,',
+  '   и можно отправлять «файлом», тогда качество останется исходным)',
   '',
   'Название можно писать не целиком. Правка появляется на сайте через несколько минут.',
 ].join('\n');
@@ -148,25 +150,37 @@ async function cmdShowPhotos(chatId, menu, text) {
   await reply(chatId, `«${item.name}», фото (первое — главное):\n` + item.photos.map((p, i) => `${i + 1}. ${p}`).join('\n'));
 }
 
-async function cmdSetPhoto(chatId, menu, message) {
-  const caption = (message.caption || '').trim();
+// Фото принимаем и сжатым, и «файлом» (тогда качество исходное).
+// Подпись у альбома стоит только на первом снимке — берём её для всей пачки.
+function photoFileId(message) {
+  if (message.photo) return message.photo[message.photo.length - 1].file_id;
+  const doc = message.document;
+  if (doc && (doc.mime_type || '').startsWith('image/')) return doc.file_id;
+  return null;
+}
+
+async function cmdSetPhoto(chatId, menu, message, caption, alreadyTouched) {
   if (!caption) { await reply(chatId, 'Добавьте к фотографии подпись с названием блюда — например «сырники».'); return false; }
   const hits = findItems(menu, caption);
   if (!hits.length) { await reply(chatId, `Блюдо «${caption}» не нашёл. Пришлите фото ещё раз с точным названием.`); return false; }
   if (hits.length > 1) { await reply(chatId, ambiguous(hits)); return false; }
 
-  const sizes = message.photo;
-  const file = await tg('getFile', { file_id: sizes[sizes.length - 1].file_id });
+  const file = await tg('getFile', { file_id: photoFileId(message) });
   const bin = await fetch(`https://api.telegram.org/file/bot${TOKEN}/${file.file_path}`);
   if (!bin.ok) throw new Error('не удалось скачать фото из Telegram');
   await mkdir('img/tg', { recursive: true });
-  const path = `img/tg/${file.file_unique_id}.jpg`;
+  const ext = (file.file_path.match(/\.(jpe?g|png|webp)$/i) || [, 'jpg'])[1].toLowerCase();
+  const path = `img/tg/${file.file_unique_id}.${ext}`;
   await writeFile(path, Buffer.from(await bin.arrayBuffer()));
 
   const { item } = hits[0];
   if (!item.photos) item.photos = [];
-  item.photos = [path, ...item.photos.filter((p) => p !== path)].slice(0, 4);
-  await reply(chatId, `Готово: новая фотография стала главной у «${item.name}». Сайт обновится через несколько минут.`);
+  const rest = item.photos.filter((p) => p !== path);
+  // первый снимок из пачки становится главным, остальные — ракурсами в карусели
+  item.photos = (alreadyTouched ? [...rest, path] : [path, ...rest]).slice(0, 4);
+  await reply(chatId, alreadyTouched
+    ? `Добавил ещё один ракурс к «${item.name}» — теперь в карточке ${item.photos.length} фото.`
+    : `Готово: новая фотография стала главной у «${item.name}». Сайт обновится через несколько минут.`);
   return true;
 }
 
@@ -182,6 +196,14 @@ console.log(`сообщений: ${updates.length}`);
 const { head, menu } = await loadMenu();
 let changed = false;
 
+// Подпись альбома приходит только с первым снимком — запоминаем её для группы
+const groupCaptions = new Map();
+for (const u of updates) {
+  const m = u.message;
+  if (m?.media_group_id && m.caption) groupCaptions.set(m.media_group_id, m.caption.trim());
+}
+const touched = new Set();
+
 for (const update of updates) {
   const message = update.message;
   const chatId = message?.chat?.id;
@@ -194,8 +216,11 @@ for (const update of updates) {
       continue;
     }
 
-    if (message.photo) {
-      changed = (await cmdSetPhoto(chatId, menu, message)) || changed;
+    if (photoFileId(message)) {
+      const caption = (message.caption || groupCaptions.get(message.media_group_id) || '').trim();
+      const key = norm(caption);
+      changed = (await cmdSetPhoto(chatId, menu, message, caption, touched.has(key))) || changed;
+      if (caption) touched.add(key);
       continue;
     }
 
