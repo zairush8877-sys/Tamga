@@ -108,23 +108,8 @@
       <a href="#about" class="hero__scroll" aria-label="Листайте вглубь">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </a>
-      <div class="jl jfade" style="background:#e9ddc4" aria-hidden="true"></div>
-      <div class="jgrain" aria-hidden="true"></div>
-    </div>
-  </section>
-
-  <!-- ===== Сцена 2: горы — Род. Память. Вкус. ===== -->
-  <section class="jscene jscene--mountains" data-scene aria-label="Род. Память. Вкус. Он не придуман — он унаследован">
-    <div class="jstage">
-      <div class="jl m-pano" style="background-image:url('img/mountains-dawn.webp')" aria-hidden="true"></div>
-      <div class="jl m-haze" aria-hidden="true"></div>
-      <div class="m-words">
-        <span class="m-word m-word--1">Род.</span>
-        <span class="m-word m-word--2">Память.</span>
-        <span class="m-word m-word--3">Вкус.</span>
-        <p class="m-tagline">Он не придуман — он унаследован</p>
-      </div>
       <div class="jl jfade" aria-hidden="true"></div>
+      <div class="jgrain" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -156,19 +141,26 @@
     </div>
   </section>
 
-  <!-- ===== Сцена 3: огонь — очаг перед меню ===== -->
+  <!-- ===== Сцена 2: печь — живой огонь перед меню ===== -->
   <section class="jscene jscene--fire" data-scene aria-label="Кухня живого огня">
     <div class="jstage">
       <canvas class="jl fire__embers" id="emberCanvas" aria-hidden="true"></canvas>
-      <div class="fire__arch" aria-hidden="true">
-        <video autoplay muted loop playsinline preload="metadata" poster="img/about-grill.webp">
-          <source src="media/fire-loop.mp4" type="video/mp4">
-        </video>
-      </div>
       <div class="fire__text">
         <p class="section__eyebrow">Мангал и печь</p>
         <h2 class="fire__title">Кухня живого огня</h2>
         <p class="fire__sub">Мясо на углях, томление в печи, хычины с раскалённого камня — дальше вас ждёт всё меню</p>
+      </div>
+      <div class="fire__oven" aria-hidden="true">
+        <div class="fire__dome">
+          <div class="fire__mouth">
+            <video autoplay muted loop playsinline preload="metadata" poster="img/about-grill.webp">
+              <source src="media/fire-loop.mp4" type="video/mp4">
+            </video>
+            <div class="fire__mouth-shade"></div>
+          </div>
+        </div>
+        <div class="fire__hearth"></div>
+        <div class="fire__glow"></div>
       </div>
       <div class="jl jfade" style="background:#ece2cf" aria-hidden="true"></div>
       <div class="jgrain" aria-hidden="true"></div>
@@ -215,7 +207,7 @@
     </div>
   </section>
 
-  <!-- ===== Сцена 4: стена рода ===== -->
+  <!-- ===== Сцена 3: стена рода ===== -->
   <section class="jscene jscene--wall" data-scene aria-label="Знак твоего рода уже на стене">
     <div class="jstage">
       <div class="jl wall__media" aria-hidden="true">
@@ -302,6 +294,22 @@
           <p class="contacts__muted"><a href="https://instagram.com/tamga_rest" rel="noopener">@tamga_rest</a></p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== Финал: рассвет над горами — Род. Память. Вкус. ===== -->
+  <section class="jscene jscene--mountains" data-scene aria-label="Род. Память. Вкус. Он не придуман — он унаследован">
+    <div class="jstage">
+      <div class="jl m-pano" style="background-image:url('img/mountains-dawn.webp')" aria-hidden="true"></div>
+      <div class="jl m-haze" aria-hidden="true"></div>
+      <div class="jl m-dawn" aria-hidden="true"></div>
+      <div class="m-words">
+        <span class="m-word m-word--1">Род.</span>
+        <span class="m-word m-word--2">Память.</span>
+        <span class="m-word m-word--3">Вкус.</span>
+        <p class="m-tagline">Он не придуман — он унаследован</p>
+      </div>
+      <div class="jl jfade jfade--dark" aria-hidden="true"></div>
     </div>
   </section>
 

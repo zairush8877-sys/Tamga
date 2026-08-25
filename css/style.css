@@ -1066,6 +1066,13 @@ a { color: inherit; text-decoration: none; }
   opacity: calc(.35 + var(--p) * .65);
   will-change: opacity;
 }
+/* Финал начинается в темноте ночных контактов — и разгорается рассветом */
+.m-dawn {
+  background: #241b13;
+  opacity: calc(1 - var(--p) * 3.4);
+  pointer-events: none;
+}
+
 /* слова вырастают из глубины, проходят сквозь камеру и уступают место следующему */
 .m-words {
   position: absolute;
@@ -1104,25 +1111,157 @@ a { color: inherit; text-decoration: none; }
   opacity: calc((var(--p) - .7) * 4.5);
 }
 
-/* ---------- Сцена 3: огонь (арка очага) ---------- */
-.jscene--fire .jstage { background: radial-gradient(ellipse 90% 70% at 50% 60%, #33241645, transparent), #201710; flex-direction: column; gap: 4vh; }
+/* ---------- Сцена 2: печь (глиняный свод с живым огнём) ---------- */
+/* Печь стоит на полу внизу экрана: свод из глины, тёмное устье с огнём
+   внутри, каменный под и отсвет пламени, падающий на пол перед печью. */
+.jscene--fire .jstage {
+  background:
+    radial-gradient(ellipse 62% 46% at 50% 96%, rgba(150, 74, 24, .32), transparent 72%),
+    radial-gradient(ellipse 90% 70% at 50% 40%, rgba(51, 36, 22, .35), transparent),
+    #1b140d;
+  flex-direction: column;
+  justify-content: flex-end;
+}
 .fire__embers { pointer-events: none; }
-.fire__arch {
+
+.fire__oven {
   position: relative;
-  width: min(38vh, 78vw);
-  aspect-ratio: 3 / 4.2;
-  border-radius: 50% 50% 14px 14px / 38% 38% 14px 14px;
-  overflow: hidden;
-  border: 1px solid rgba(217, 192, 138, .35);
-  box-shadow: 0 0 80px rgba(255, 140, 50, .18), 0 30px 80px rgba(0, 0, 0, .55);
-  transform: scale(calc(.42 + var(--p) * 1.4));
+  width: min(520px, 88vw);
+  margin-bottom: 7vh;                     /* под и отсвет остаются в кадре */
+  transform: scale(calc(.74 + var(--p) * .42));
+  transform-origin: 50% 100%;             /* растёт от пола — мы подходим ближе */
   will-change: transform;
 }
-.fire__arch video {
+
+/* Свод: глина, слепленная руками, — тёплая сверху, глухая по краям */
+.fire__dome {
+  position: relative;
+  height: min(34vh, 54vw);
+  border-radius: 50% 50% 10px 10px / 58% 58% 10px 10px;
+  background:
+    radial-gradient(ellipse 40% 26% at 50% 99%, rgba(255, 132, 44, .30), transparent 58%),
+    radial-gradient(ellipse 48% 24% at 50% 2%, rgba(198, 162, 118, .10), transparent 60%),
+    linear-gradient(#4a3927 0%, #3a2b1c 40%, #2a1f14 74%, #1d150d 100%);
+  box-shadow:
+    inset 0 -22px 46px rgba(0, 0, 0, .55),
+    inset 16px 0 34px rgba(0, 0, 0, .38),
+    inset -16px 0 34px rgba(0, 0, 0, .38),
+    0 -12px 70px rgba(255, 128, 40, .12),
+    0 26px 70px rgba(0, 0, 0, .55);
+  overflow: hidden;
+}
+/* Фактура глины: зерно плюс еле заметные слои кладки */
+.fire__dome::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .5;
+  background-image:
+    repeating-linear-gradient(rgba(255, 226, 186, .045) 0 1px, transparent 1px 26px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+/* Копоть над устьем — от многих лет топки */
+.fire__dome::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 52%;
+  width: 62%;
+  height: 34%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 100%, rgba(12, 7, 4, .72), transparent 70%);
+}
+
+/* Устье: тьма по краям, огонь в глубине */
+.fire__mouth {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 52%;
+  height: 58%;
+  border-radius: 50% 50% 4px 4px / 56% 56% 4px 4px;
+  overflow: hidden;
+  background: #0b0603;
+  box-shadow:
+    inset 0 0 42px 20px rgba(6, 3, 1, .92),
+    0 0 70px rgba(255, 122, 34, .42);
+}
+.fire__mouth video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 88%;
+  /* Врезаемся в языки пламени: в кадре остаётся только огонь, без подачи */
+  transform: scale(2.6);
+  transform-origin: 50% 88%;
+  filter: brightness(.62) saturate(1.55) contrast(1.25) sepia(.3) hue-rotate(-12deg) blur(1px);
 }
+/* Всё в устье уводим в огненный тон — от подачи не остаётся и намёка */
+.fire__mouth::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 108, 26, .55);
+  mix-blend-mode: color;
+  pointer-events: none;
+}
+/* В печи видно только зарево: края устья — глухая темнота */
+.fire__mouth-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 54% 40% at 50% 80%, rgba(255, 134, 38, .30), transparent 62%),
+    radial-gradient(ellipse 62% 50% at 50% 76%, transparent 18%, rgba(9, 5, 2, .72) 62%, rgba(5, 2, 1, .96) 100%);
+}
+
+/* Под печи — каменная плита, на которой она стоит */
+.fire__hearth {
+  position: relative;
+  width: 124%;
+  margin-left: -12%;
+  height: clamp(26px, 4.4vh, 44px);
+  border-radius: 3px 3px 6px 6px;
+  /* верхняя плоскость плиты ловит отсвет огня, передняя грань — в тени */
+  background:
+    linear-gradient(#6b5032 0%, #4a3724 22%, #2b2016 23%, #241a11 70%, #17100a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 214, 156, .28),
+    0 18px 50px rgba(0, 0, 0, .65);
+}
+/* тёплое пятно на плите прямо перед устьем */
+.fire__hearth::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 46%;
+  height: 22%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 100% at 50% 0%, rgba(255, 150, 56, .5), transparent 75%);
+}
+
+/* Отсвет пламени на полу перед печью — живой, дышит */
+.fire__glow {
+  position: absolute;
+  left: 50%;
+  bottom: -8%;
+  width: 88%;
+  height: 14vh;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 52% 50% at 50% 0%, rgba(255, 138, 44, .38), transparent 72%);
+  filter: blur(8px);
+  pointer-events: none;
+  animation: firePulse 3.4s ease-in-out infinite alternate;
+}
+@keyframes firePulse {
+  from { opacity: .72; transform: translateX(-50%) scaleY(.9); }
+  to   { opacity: 1;   transform: translateX(-50%) scaleY(1.08); }
+}
+
+.fire__text { margin-bottom: 5vh; }
+
 .fire__text {
   position: relative;
   text-align: center;
@@ -1263,7 +1402,9 @@ a { color: inherit; text-decoration: none; }
   .menu__panel.is-active .mitem { opacity: 1; }
   /* сцены погружения замирают в читаемом состоянии */
   .m-word, .m-tagline, .fire__text, .wall__text { opacity: 1 !important; transform: none !important; }
-  .hero__media, .fire__arch, .wall__media, .m-pano, .m-haze { transform: none !important; }
+  .hero__media, .fire__oven, .wall__media, .m-pano, .m-haze { transform: none !important; }
+  .m-dawn { opacity: 0 !important; }
+  .fire__glow { animation: none; }
   .jfade { opacity: 0 !important; }
   .reveal--deep { filter: none; }
 }
